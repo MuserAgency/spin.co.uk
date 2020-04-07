@@ -1,4 +1,13 @@
-# Craft 2 Storage (https://craftcms.com/support/craft-storage-gitignore)
-# not necessary for Craft 3 (https://github.com/craftcms/craft/issues/26)
 /craft/storage/*
 !/craft/storage/rebrand
+
+exclude.txt
+google45c9d3d1388e0952.html
+googleb29d7f7af2f9bbb9.html
+robots.txt
+php.ini_old
+.htaccess
+
+/assets/Projects/*
+/assets/SPIN360°/*
+/assets/Studio-life/*
