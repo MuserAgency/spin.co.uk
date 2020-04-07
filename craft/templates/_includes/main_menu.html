@@ -1,0 +1,80 @@
+{% set navConfig = {
+    'startwithActive' : true,
+    'activeClass' : 'active',
+    'maxDepth' : 2,                    
+    'activeClassOnAncestors' : true,
+    'ancestorActiveClass' : 'activeAncestor'
+} %}
+{% set navigation = craft.navee.getNav('mainNav', navConfig) %}
+{% set isUserPhone = craft.detect.isPhone %}
+    
+    
+
+<a class="main-logo" href="{{ siteUrl }}">
+
+<svg version="1.1" id="thelogo" class="logo img-fluid" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="-20.7 648.7 400 140" xml:space="preserve">
+	<path d="M355.8,785.5h23.5V651.9h-20.2v98.3l-58-98.3H275v133.6h20.2V684.1L355.8,785.5z M228.2,785.5h21.2V651.9h-21.2V785.5z
+		 M127.3,705v-34.2h42.9c11.8,0,17.8,7.8,17.8,17.2c0,9.1-5.9,17-17.5,17H127.3L127.3,705z M208.8,688c0-21.3-13.6-36.1-37-36.1
+		h-65.3v133.6h20.8v-61.6h44.3C195,723.9,208.8,709,208.8,688 M34.9,788.6c26.5,0,51.5-12.2,51.5-41.8c0-25.8-21.5-33.2-37.5-37.6
+		L28.5,704C12.1,699.4,7,691.8,7,684.6c0-10.8,11.8-17.4,26.9-17.4c14.9,0,25.2,5.9,30.1,24.8l19.3-8.9
+		c-6.8-24.4-27.3-34.4-49.4-34.4c-25.2,0-48.3,11.1-48.3,37.4c0,22,18.7,31.5,37,36.1l19.8,5c13,3.7,22.9,9.6,22.9,21.8
+		c0,16.3-15.1,21.3-29.6,21.3c-20,0-32.6-10.8-36.4-29.8l-19.9,10.2C-12.2,778.3,9.6,788.6,34.9,788.6"/>
+</svg>
+
+</a>
+
+
+<div class="masthead sticky">
+    <div class="container-fluid px-2 central">
+        <div class="row">
+            <div class="col">
+                
+            </div>
+            <div class="col pl-0 pr-3 text-right ">
+                <ul class="nav main-menu flex-column font-medium md-hidden">
+                    {% nav node in navigation %}
+                        <li class="nav-item {% if node.class %}{{ node.class }}{% endif %} ">
+                            <a class="nav-link text-uppercase" href="{{ node.link }}">{{ node.title }}</a>
+                        </li>
+                    {% endnav %}
+                </ul>   
+                
+                <a class="nav-link text-uppercase mobile-menu-open font-medium" href="#">
+                    Menu <span><svg version="1.1" id="menu_arrow" class="menu_arrow" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 17 17" xml:space="preserve"><polygon points="17,0 0,8.8 17,17 "/></svg></span>         
+                </a>
+            </div>
+            {% if entry.section.handle == 'work' %}  
+                <div class="col pl-1 text-right font-medium md-hidden">
+                    <p class="project-info mb-0"><a href="#info" class="anchorLink">TEXT</a></p>
+                    <p class="project-top mb-0 hidden"><a href="#top" class="anchorLink">TOP</a></p>
+                </div>
+            {% elseif entry.section.handle == 'spin360' %}    
+                <div class="col pl-1 text-right font-medium md-hidden">
+                    <p class="project-info mb-0"><a href="#info" class="anchorLink">TEXT</a></p>
+                    <p class="project-top mb-0 hidden"><a href="#top" class="anchorLink">TOP</a></p>
+                </div>
+            {% else %}
+                <div class="col pl-1 text-right font-medium md-hidden">
+                    <span class="mb-0" id='date-part'></span><br />
+                    <span class="mb-0" id='time-part'></span>  
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+    
+</div>
+
+<div class="text-right mobile-menu">        
+    <ul class="nav main-menu flex-column font-medium">
+    {% nav node in navigation %}
+        <li class="nav-item {% if node.class %}{{ node.class }}{% endif %} ">
+            <a class="nav-link mobile-link text-uppercase" href="{{ node.link }}">{{ node.title }}</a>
+        </li>
+    {% endnav %}
+        
+    </ul>
+    
+    <a class="mobile-menu-close font-medium" href="#">close</a>                
+</div>

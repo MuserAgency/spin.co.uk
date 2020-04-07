@@ -1,0 +1,73 @@
+{#
+ # News index template
+ # -------------------
+ #
+ # This template is loaded whenever https://example.com/news is
+ # requested, because it is located at news/index.html in your
+ # craft/templates/ folder.
+ #
+ # See this page for more details on how Craft routes requests:
+ # https://craftcms.com/docs/routing
+ #}
+
+{% extends "_layouts/site" %}
+{% set title = "work" %}
+
+{% block content %}
+   
+
+    <main id="content" role="main">
+        <div class="container-fluid p-0 p-sm-1 {% if entry.section.handle == 'studio' %}px-0{% else %}central {% endif %} "> 
+            <div class="row no-gutters">
+
+                {% for entry in craft.entries.section('work') %}
+                    <div class="post col-sm-4 p-0 pb-1 p-sm-1 align-self-center text-center"> 
+                       
+                                                                   
+                        {% set image = entry.featuredImage.first() %}
+                        {% if image %}      
+                            {% if image.typeVideo | length  %}
+                                {% set poster = image.homeVideoImage.first() %}
+                                {% set mp4 = image.homeVideoMp4.first() %}
+                                {% set webm = image.homeVideoWebm.first() %}
+                                <span class="{{ image.orientation }}">
+                                    <a href="{{ entry.url }}">
+                                        <video class="video-project" playsinline muted autoplay loop poster="{% if poster %}{{ poster.url }}{% endif %}" >
+                                            <source src="{% if webm %}{{ webm.url }}{% endif %}" type="video/webm" />
+                                            <source src="{% if mp4 %}{{ mp4.url }}{% endif %}" type="video/mp4" />Your browser does not support the video tag. I suggest you upgrade your browser.      
+                                        </video> 
+                                    </a>         
+                                </span>
+                            {% else %}                        
+                                        
+                                {% if entry.featuredImageRollover | length %}
+                                    <span class="{{ image.orientation }} image shuffle-me">
+                                        <a href="{{ entry.url }}" class="info"></a>
+                                        <div class="images">
+                                            <img class="img-fluid first" src="{{ image.getUrl() }}" alt="{{ image.title }}">
+                                            {% for asset in entry.featuredImageRollover %}
+                                                <img class="img-fluid featuredImageRollover" src="{{ asset.url }}" alt="{{ asset.title }}" style="display: none;">  
+                                            {% endfor %}
+                                        </div>
+                                    </span>
+                                {% else %}
+                                    <span class="{{ image.orientation }} image">
+                                        <a href="{{ entry.url }}" class="info"></a>
+                                        <img class="img-fluid" src="{{ image.getUrl() }}" alt="{{ image.title }}">
+                                    </span>
+                                {% endif %}                                    
+
+                            {% endif %}
+                        {% endif %}
+                        <span class="col-12 text-left mt-1 px-1 px-sm-0 match">
+                            <h2 class="card-text mb-0"><a href="{{ entry.url }}">{{ entry.title }}</a></h2>
+                            <h2 class="card-text">{{ entry.subTitle }}&nbsp;</h2> 
+                        </span>   
+                    </div>
+                {% endfor %}         
+            </div>
+        </div>
+    </main>
+</div>
+<a name="info" id="info"></a>
+{% endblock %}

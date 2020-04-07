@@ -1,0 +1,141 @@
+{#
+ # Article Body include template
+ # -----------------------------
+ #
+ # This template is used to output HTML for an "Article Body" Matrix field.
+ #
+ # An `entry` variable is expected to be defined.
+-#}
+
+{% macro getPosition(block) %}
+	{%- spaceless %}
+		{% set positionedTypes = ['text', 'pullQuote', 'image', 'quote'] %}
+		{{ block.type.handle in positionedTypes and block.position ? block.position : 'center' }}
+	{% endspaceless -%}
+{% endmacro %}
+
+{% from _self import getPosition %}
+
+{% set prevType = null %}
+{% set prevPosition = null %}
+{% set nextType = null %}
+{% set nextPosition = null %}
+{% set closedLastRow = true %}
+{% set blocks = entry.articleBody %}
+
+<div class="container">
+    
+{% for i, block in blocks %}
+
+	{% set type = (nextType ?: block.type.handle) %}
+	{% set position = (nextPosition ?: getPosition(block)~'') %}
+
+	{% set nextType = (not loop.last ? blocks[i+1].type.handle) %}
+	{% set nextPosition = (not loop.last ? getPosition(blocks[i+1])~'') %}
+
+
+
+
+	{# Are we starting a new row? #}
+	{% if position == 'full' %}
+		<div class="row">
+	{% elseif closedLastRow %}
+		<div class="row justify-content-center">
+		{% if type not in ['gallery', 'quote'] %}
+			<div class="
+			{%- if (type == 'image' and position == 'center') %} col-md-8
+			{%- else %} col-md-6 {% endif -%}
+			">
+		{% endif %}
+	{% endif %}
+
+
+
+    {% switch type %}
+		{% case 'newSection' %}
+			<hr class="horz-rule">
+			<h1 class="beta center">{{ block.sectionHeading }}</h1>
+        
+        {% case 'heading' %}
+			<h2 class="delta center subfont caps">{{ block.heading }}</h2>
+
+		{% case 'text' %}
+			{{ block.text }}
+        
+        {% case 'pullQuote' %}
+			<div class="pullquote">
+				<p class="delta center subfont caps">{{ block.pullQuote }}</p>
+			</div>
+                
+        {% case 'image' %}
+			{% set image = block.image.first() %}
+			{% if image %}
+                {#
+                    {% if position == 'full' %}
+                        {% do image.setTransform({ width: 1440, height: 480 }) %}
+                    {% elseif position == 'center' %}
+                        {% do image.setTransform({ width: 600 }) %}
+                    {% elseif isBreakout %}
+                        {% do image.setTransform({ width: 460 }) %}
+                    {% else %}
+                        {% do image.setTransform({ width: 360 }) %}
+                    {% endif %}
+                #}
+				<img class="img-fluid {% if position == 'full' %} contain-media{% endif %}" src="{{ image.url }}" alt="{{ image.title }}">
+			{% endif %}
+                
+        {% case 'gallery' %}
+			{% for image in block.images %}
+				<div class="col-md-3 p-2">
+					<img src="{{ image.getUrl('small') }}" alt="{{ image.title }}" class="img-fluid">
+					{{ image.shortDescription }}
+				</div>
+			{% endfor %}
+        
+        {% case 'slider' %}
+            <div class="slick col">
+                {% for slide in block.slides %}
+                    <div class="col-md-3 p-2">
+                        <img src="{{ slide.getUrl() }}" alt="{{ slide.title }}" class="img-fluid">
+                        {{ image.shortDescription }}
+                    </div>
+                {% endfor %}
+            </div>
+                
+        {% case 'quote' %}
+			<blockquote class="blockquote blockquote-reverse">
+		
+                    <p class="mb-0">{{ block.quote }}</p>
+
+					{% if block.attribution %}
+						<footer class="blockquote-footer">– <cite>{{ block.attribution }}</cite></footer>
+					{% endif %}
+
+			</blockquote>
+                
+    {% endswitch %}
+
+
+            
+
+
+	{# Are we closing this row? #}
+
+		{% if position != 'full' and type not in ['gallery', 'quote'] %}
+			</div>
+		{% endif %}
+		</div>
+
+
+	{% if type == 'heading' and not loop.first and prevType == 'newSection' %}
+		<div class="flex">
+			<div class="g1-flex4 g2-flex6 g3-flex10 g3-offset1">
+				<hr class="horz-rule">
+			</div>
+		</div>
+	{% endif %}
+
+	{% set prevType = type %}
+	{% set prevPosition = position %}
+{% endfor %}
+    </div>

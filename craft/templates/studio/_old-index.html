@@ -1,0 +1,109 @@
+{#
+ # Studio index template
+ # -------------------
+ #
+ # This template is loaded whenever https://example.com/news is
+ # requested, because it is located at news/index.html in your
+ # craft/templates/ folder.
+ #
+ # See this page for more details on how Craft routes requests:
+ # https://craftcms.com/docs/routing
+ #}
+
+{% extends "_layouts/site" %}
+
+
+{% block content %}
+
+
+<div class="row no-gutters">
+	<div class="col-12 pt-0 my-5 border-top">
+        <h1 class="studio-title">Space</h1>
+        <div class="carousel-wrapper">
+            <div class="main-carousel">            
+                {% for block in entry.spaceSlider %}
+                {% if block.type == "slide" %}
+                    <div class="carousel-cell text-center px-0 px-sm-2 px-md-4 px-lg-5">
+                        {% set image = block.image.first() %}
+                        {% if image %}
+                            <img class="slide-img" src="{{ image.getUrl() }}" alt="{{ image.title }}">
+                        {% endif %}
+                        <div class="slide-title-block px-0 py-2">
+                            <h2 class="card-text m-0">{{ block.slide_title }}</h2>
+                            <h2 class="card-text">{{ block.subTitle }}</h2>
+                        </div>
+                    </div>        
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-12 pt-0 my-5 border-top">
+        <h1 class="studio-title">Garden</h1>
+        <div class="carousel-wrapper">
+            <div class="main-carousel">            
+                {% for block in entry.gardenSlider %}
+                {% if block.type == "slide" %}
+                    <div class="carousel-cell text-center px-0 px-sm-2 px-md-4 px-lg-5">
+                        {% set image = block.image.first() %}
+                        {% if image %}
+                            <img class="slide-img" src="{{ image.getUrl() }}" alt="{{ image.title }}">
+                        {% endif %}
+                        <div class="slide-title-block px-0 py-2">
+                            <h2 class="card-text m-0">{{ block.slide_title }}</h2>
+                            <h2 class="card-text">{{ block.subTitle }}</h2>
+                        </div>
+                    </div>        
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+	<div class="col-12 pt-0 my-5 border-top">
+        <h1 class="studio-title">Curation</h1>
+        <div class="carousel-wrapper">
+            <div class="main-carousel">            
+                {% for block in entry.curationSlider %}
+                {% if block.type == "slide" %}
+                    <div class="carousel-cell text-center px-0 px-sm-2 px-md-4 px-lg-5">
+                        {% set image = block.image.first() %}
+                        {% if image %}
+                            <img class="slide-img" src="{{ image.getUrl() }}" alt="{{ image.title }}">
+                        {% endif %}
+                        <div class="slide-title-block px-0 py-2">
+                            <h2 class="card-text m-0">{{ block.slide_title }}</h2>
+                            <h2 class="card-text">{{ block.subTitle }}</h2>
+                        </div>
+                    </div>        
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-12 pt-0 my-5 border-top">
+        <h1 class="studio-title">Talks</h1>
+        <div class="carousel-wrapper">
+            <div class="main-carousel">            
+                {% for block in entry.talkSlider %}
+                {% if block.type == "slide" %}
+                    <div class="carousel-cell text-center px-0 px-sm-2 px-md-4 px-lg-5">
+                        {% set image = block.image.first() %}
+                        {% if image %}
+                            <img class="slide-img" src="{{ image.getUrl() }}" alt="{{ image.title }}">
+                        {% endif %}
+                        <div class="slide-title-block px-0 py-2">
+                            <h2 class="card-text m-0">{{ block.slide_title }}</h2>
+                            <h2 class="card-text">{{ block.subTitle }}</h2>
+                        </div>
+                    </div>        
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+	
+{% endblock %}

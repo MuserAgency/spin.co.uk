@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+    <head>
+        {% block head %}    
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="keywords" content="{{ entry.metaKeywords }}" />
+        <meta name="description" content="{{ entry.metaDescription }}" />
+        <title>{% if title is defined %}{{ title }} - {% endif %}{{ siteName }}</title>
+        <meta property="og:title" content="{% if title is defined %}{{ title }} - {% endif %}{{ siteName }}" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="theme-color" content="#ffffff">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ siteUrl }}css/theme.min.css?v=3.0.1">
+        
+
+       <style>
+            body {
+                background-color: {{ entry.backgroundColour }};
+                color: {{ entry.textColour }};
+            }
+           #thelogo,
+           a.mobile-menu-open .menu_arrow {
+               fill: {{ entry.textColour }};
+           }
+           .nav a.nav-link, 
+           a.mobile-menu-open,
+           .nav a.nav-link {
+               color: {{ entry.textColour }};
+           }
+           
+           .nav a.nav-link.mobile-link:active, 
+           .nav a.nav-link.mobile-link:hover {
+               border-color: {{ entry.textColour }};
+           }
+           
+           .nav a.nav-link.mobile-link {
+                color: #000;
+           }
+           
+        </style>
+
+        
+        
+	{% endblock %}
+</head>
+<body {% if bodyClass is defined %}class="{{ bodyClass }}{% endif %}{% block bodyClass %}{% endblock bodyClass %}">
+    <a name="top" id="top"></a>
+    
+    {% block body %}{% endblock %}
+	{% block foot %}{% endblock %}
+    
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+    <script src="{{ siteUrl }}js/bootstrap.min.js"></script> 
+    
+    {% if entry.section.handle == 'library' %}
+        <scrip src="https://cdn.jsdelivr.net/hammerjs/2.0.3/hammer.min.js"></script>
+		<script src="{{ siteUrl }}js/FlameViewportScale.js"></script>
+		<script src="{{ siteUrl }}js/jquery.tosrus.all.min.js"></script>
+		<link media="all" rel="stylesheet" href="{{ siteUrl }}css/jquery.tosrus.all.css" />
+    {% endif %}    
+
+    
+    {% if entry.section.handle == 'processingHomepage' %}      
+        <script src="{{ siteUrl }}js/p5.js"></script>
+        <script src="{{ siteUrl }}js/Responsive_processing.js"></script>
+    {% endif %}
+    
+    <script src="{{ siteUrl }}js/theme.min.js"></script>
+    
+</body>
+</html>

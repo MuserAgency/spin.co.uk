@@ -1,0 +1,62 @@
+{#
+ # Homepage template
+ # ---------------
+ #
+ # When this template gets loaded, it will be because someone has accessed
+ # https://yoursite.com/ (without any URI). Craft checks to see if you have
+ # a Single section set to be the Homepage (as you do, by default), and
+ # loads the section’s Template (this file). A special ‘entry’ variable
+ # will already be set for you, assigned to the Homepage entry.
+ #
+ # It's worth noting that even if you didn't have a Homepage Single section,
+ # as long as this template remains at craft/templates/index.html, it
+ # would still be the one to get loaded when accessing https://yoursite.com/,
+ # albeit without an ‘entry’ variable already set for you.
+ #
+ # See this page for more details on how Craft routes requests:
+ # https://craftcms.com/docs/routing
+ #}
+
+{% extends "_layouts/site" %}
+
+{% block content %}
+
+<div class="row featured-post">
+    <div class="full-screen">
+    
+     {% for block in entry.homePageFeature %}
+        {% if block.type == "front_feature" %}
+            <div class="item" data-scroll-speed="{{ block.speed }}">
+                {% set entry = block.front_link.first() %}
+                    {% if entry %}
+                        <a href="{{ entry.url }}">
+                    {% endif %}                
+                    {% set image = block.visual.first() %}
+                        {% if image.typeVideo | length  %}
+                            {% set poster = image.homeVideoImage.first() %}
+                            {% set mp4 = image.homeVideoMp4.first() %}
+                            {% set webm = image.homeVideoWebm.first() %}
+                            <video class="video-project" playsinline muted autoplay loop poster="{% if poster %}{{ poster.url }}{% endif %}" >
+                                <source src="{% if webm %}{{ webm.url }}{% endif %}" type="video/webm" />Your browser does not support the video tag. I suggest you upgrade your browser.
+                                <source src="{% if mp4 %}{{ mp4.url }}{% endif %}" type="video/mp4" />Your browser does not support the video tag. I suggest you upgrade your browser.           
+                            </video>                    
+                        {% else %}
+                            <img class="lazy img-fluid" data-original="{{ image.getUrl() }}" alt="{{ image.title }}" data-height="{{ image.getHeight }}" data-width="{{ image.getWidth }}">                
+                        {% endif %}
+                    {% if entry %}
+                        </a>
+                    {% endif %}  
+            </div>        
+        {% endif %}
+        {% endfor %}
+    
+    </div>
+</div>    
+</div>
+<a name="info" id="info"></a>
+{% endblock %}
+
+
+
+ 
+            

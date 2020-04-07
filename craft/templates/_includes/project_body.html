@@ -1,0 +1,45 @@
+{#
+ # Article Body include template
+ # -----------------------------
+ #
+ # This template is used to output HTML for an "Article Body" Matrix field.
+ #
+ # An `entry` variable is expected to be defined.
+-#}
+<div class="row card-deck mt-5 pt-2">
+{% for asset in entry.images %}
+
+    {% if asset.kind == 'json' %} 
+        {% set embed = craft.embeddedAssets.fromAsset(asset) %}       
+        {% if embed %}
+            <div class="col-12 text-center pb-1 px-0">
+                <div class="intrinsic-container">
+                    {{ embed.safeHtml|raw }}
+                </div>
+            </div>
+        {% endif %}
+
+    {% elseif asset.kind == 'image' %}
+        {% set mediaSize = asset.mediaSize.value %}
+        {% if mediaSize %}
+            <div class="{{ mediaSize }} text-center">
+        {% else %}
+            <div class="col-12 text-center pb-1 pt-0 px-0">
+        {% endif %}
+                <img class="lazy img-fluid" data-original="{{ asset.url }}" alt="{{ asset.title }}" data-height="{{ asset.getHeight }}" data-width="{{ asset.getWidth }}">
+            </div>
+    {% endif %}
+
+{% endfor %}
+</div>
+<a name="info" id="info"></a>
+<div class="row mt-2 mx-2 mx-md-0 pt-2 border-top no-gutters">
+    <div class="col-sm-4">        
+        <h2 class="text-uppercase font-medium pt-sm-1">{{ entry.title }}</h2>
+    </div>
+    <div class="col">            
+        {% if entry.fullDescription %} 
+            {{ entry.fullDescription }}         
+        {% endif %}
+    </div>     
+</div>

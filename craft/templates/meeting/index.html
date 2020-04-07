@@ -1,0 +1,66 @@
+{#
+ # photography index template
+ # -------------------
+ #
+ # This template is loaded whenever https://example.com/news is
+ # requested, because it is located at news/index.html in your
+ # craft/templates/ folder.
+ #
+ # See this page for more details on how Craft routes requests:
+ # https://craftcms.com/docs/routing
+ #}
+
+{% extends "_layouts/site" %}
+
+
+{% block content %}
+
+	<div class="row card-deck my-5 pt-2">
+        {% for block in entry.people %}
+        {% if block.type == "person" %}
+            <div class="post col-sm-4 p-1">                         
+                {% set image = block.image.first() %}
+                {% if image %}
+                <div class="mb-2 align-self-center text-center">      
+                    <span>
+                        <img class="lazy img-fluid" data-original="{{ image.getUrl() }}" alt="{{ image.title }}" data-height="{{ image.getHeight }}" data-width="{{ image.getWidth }}">
+                    </span>
+                </div>
+                {% endif %}
+                <h2 class="card-text m-0">{{ block.fullName }}</h2>
+                <h2 class="card-text">{{ block.jobTitle }}</h2> 
+            </div>  
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="row mt-5 pt-2 border-top no-gutters">
+        <div class="col-sm-4">
+            <h2 class="text-uppercase font-medium pt-sm-1">{{ entry.subTitle|markdown }}</h2>
+        </div>
+        <div class="col">            
+            {% if entry.fullDescription %} 
+                {{ entry.fullDescription }}         
+            {% endif %}
+        </div>     
+    </div>
+
+    <div class="row mt-5 pt-2 border-top no-gutters">
+        <div class="col-sm-4">
+            <h2 class="text-uppercase font-medium pt-sm-1">{{ entry.client_subtitle|markdown }}</h2>
+        </div>
+        <div class="col-sm-4">            
+            {% if entry.clientList1 %} 
+                {{ entry.clientList1 }}         
+            {% endif %}
+        </div>  
+        <div class="col-sm-4">            
+            {% if entry.clientList2 %} 
+                {{ entry.clientList2 }}         
+            {% endif %}
+        </div>     
+    </div>
+
+
+
+{% endblock %}

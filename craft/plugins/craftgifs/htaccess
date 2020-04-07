@@ -1,0 +1,6 @@
+
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	# change 'gifs' folder below to the folder you specified in plugin file
+	RewriteRule assets/(.*)/(.*)\.gif /gifs/$2.gif [L]
+</IfModule>

@@ -1,0 +1,48 @@
+{#
+ # workshop index template
+ # -------------------
+ #
+ # This template is loaded whenever https://example.com/news is
+ # requested, because it is located at news/index.html in your
+ # craft/templates/ folder.
+ #
+ # See this page for more details on how Craft routes requests:
+ # https://craftcms.com/docs/routing
+ #}
+
+{% extends "_layouts/site" %}
+{% set title = "Workshop" %}
+
+{% block content %}
+    <main id="content" role="main">
+        <div class="container-fluid p-0 p-sm-1 {% if entry.section.handle == 'studio' %}px-0{% else %}central {% endif %} ">  
+            <div class="row no-gutters">
+                {% for block in entry.gallery %}
+
+                    {% if block.type == "image" %}  
+                    {% for image in block.image %}
+                        <div class="post col-sm-4 p-0 pb-1 p-sm-1 align-self-center text-center">                   
+                             <span class="{{ image.orientation }}">
+                                <img class="lazy img-full" data-original="{{ image.getUrl() }}" alt="{{ image.title }}" data-height="{{ image.getHeight }}" data-width="{{ image.getWidth }}">
+                            </span>
+                        </div>
+                    {% endfor %}
+
+                    {% elseif block.type == "groupTitle" %}
+                        <div class="post group-title col-sm-4 p-0 pb-1 p-sm-1 align-self-center text-center">
+                        {% set image = block.backgroundImage.first() %}    
+                        {% if image %}
+                            <img class="lazy img-full" data-original="{{ image.getUrl() }}" alt="{{ image.title }}" data-height="{{ image.getHeight }}" data-width="{{ image.getWidth }}">
+                        {% endif %}                
+                            <p class=" text-uppercase font-medium py-5">{{ block.groupTitle }}</p>
+                        </div>
+
+                    {% endif %}
+
+                {% endfor %}     
+            </div>
+        </div>
+    </main>
+</div>
+<a name="info" id="info"></a>
+{% endblock %}

@@ -1,0 +1,24 @@
+<div class="row mx-2 no-gutters">
+
+    <div class="col-sm-8 ml-auto">            
+        <div class="col p-0">
+            {% set entries = entry.relatedProjects %}
+            {% if entries | length %}
+                <p>Related work<br />
+                {% for entry in entries %}
+                    <a href="{{ entry.url }}">{{ entry.title }}</a>&nbsp;&nbsp;
+                {% endfor %}
+                </p>   
+            {% endif %}
+        </div>    
+        <div class="col p-0">
+            <p>Get in touch<br />
+            <a href="#">Mail </a>  <a href="#">Call</a></p> 
+        </div> 
+        <div class="col p-0">
+            <p>Share <br />
+            <a href="https://twitter.com/home?status={{ entry.title }} {{ entry.url }}" target="_self">Twitter</a>   <a href="#">Instagram</a>
+            </p>
+        </div>
+    </div>
+</div>

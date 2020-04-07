@@ -1,0 +1,111 @@
+{#
+ # News entry template
+ # -------------------
+ #
+ # This template gets loaded whenever a News entry’s URL is
+ # requested. That’s because the News section’s Template setting is
+ # set to “news/_entry”, the path to this template.
+ #
+ # When this template is loaded, it will already have an ‘entry’
+ # variable, set to the requested News entry.
+ #
+ # See this page for more details on how Craft routes requests:
+ # https://craftcms.com/docs/routing
+ #}
+
+{% extends "_layouts/site" %}
+{% block bodyClass %} project-single{% endblock bodyClass %}
+{% set title = entry.title %}
+
+{% block content %}
+    <main id="content" role="main">
+        <div class="container-fluid p-0 p-sm-1 {% if entry.section.handle == 'studio' %}px-0{% else %}central {% endif %} "> 
+            <div class="row no-gutters project-list">
+
+                {% for asset in entry.images %}
+
+                    {% if asset.vimeoId != '' %}
+                    <div class="col-12 text-center p-0 pb-1 p-sm-1">   
+                        <img class="lazy img-full" data-original="{{ asset.url }}" alt="{{ asset.title }}" data-height="{{ asset.getHeight }}" data-width="{{ asset.getWidth }}">
+                        <div class="play" data-video-id="{{ asset.vimeoId }}" data-width="{{ asset.width }}" data-height="{{ asset.height }}">
+                            <img class="img-fluid" src="{{ siteUrl }}theme/play.png" alt="Play">
+                        </div>        
+                    </div>
+
+                    {% elseif asset.typeVideo | length  %}
+
+                        {% set poster = asset.homeVideoImage.first() %}
+                        {% set mp4 = asset.homeVideoMp4.first() %}
+                        {% set webm = asset.homeVideoWebm.first() %}
+                        {% set mediaSize = asset.mediaSize.value %} 
+
+                        {% if mediaSize %}
+                            <div class="{{ mediaSize }} p-0 pb-1 p-sm-1 text-center pack-shot">
+                        {% else %}
+                            <div class="col-12 text-center p-0 pb-1 p-sm-1">
+                        {% endif %}
+                            <video class="video-project" playsinline muted loop poster="{% if poster %}{{ poster.url }}{% endif %}" >
+                                <source src="{% if webm %}{{ webm.url }}{% endif %}" type="video/webm" />Your browser does not support the video tag. I suggest you upgrade your browser.
+                                <source src="{% if mp4 %}{{ mp4.url }}{% endif %}" type="video/mp4" />Your browser does not support the video tag. I suggest you upgrade your browser.            
+                            </video>
+                        </div>
+
+                    {% else %} 
+                        {% set mediaSize = asset.mediaSize.value %}  
+                        {% if mediaSize %}
+                            <div class="{{ mediaSize }} p-0 pb-1 p-sm-1 text-center pack-shot">
+                        {% else %}
+                            <div class="col-12 text-center p-0 pb-1 p-sm-1">
+                        {% endif %}
+                                <img class="lazy img-full" data-original="{{ asset.url }}" alt="{{ asset.title }}" data-height="{{ asset.getHeight }}" data-width="{{ asset.getWidth }}">
+                            </div>
+
+                    {% endif %}
+
+
+                {% endfor %} 
+            </div>
+        </div>
+    </main>
+</div>
+<a name="info" id="info"></a>
+        
+<div class="container-fluid central px-1 px-sm-2">
+    <div class="row mt-3 mb-4 pt-2 border-top no-gutters">
+        <div class="col-sm-6">        
+            <h2 class="text-uppercase font-medium pb-1">{{ entry.title }}</h2>
+        </div>
+        <div class="col pl-sm-1">            
+            {% if entry.fullDescription %} 
+                {{ entry.fullDescription }}         
+            {% endif %}
+        </div> 
+    </div>
+</div>                         
+
+<div class="container-fluid central px-1 px-sm-2">
+    <div class="row mt-3 mb-4 pt-2 no-gutters">
+        <div class="col-sm-6 pl-sm-1 ml-auto">            
+            <div class="col p-0">
+                {% set entries = entry.relatedProjects %}
+                {% if entries | length %}
+                    <p>Related work<br />
+                    {% for entry in entries %}
+                        <a href="{{ entry.url }}">{{ entry.title }}</a>&nbsp;&nbsp;
+                    {% endfor %}
+                    </p>   
+                {% endif %}
+            </div>    
+
+            <div class="col p-0">
+                <p>
+                    Share: 
+                    <a href="https://twitter.com/share?url={{ entry.url }}&text={{ entry.title }}&via=spin_studio&amp&hashtags=designbyspin" target="_blank">Twitter</a>   
+                    <a href="https://www.facebook.com/sharer.php?u={{ entry.url }}" target="_blank">Facebook</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

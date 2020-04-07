@@ -1,0 +1,130 @@
+{#
+ # Studio template
+ # ------------------------
+ #
+ # This layout template extends the _layouts/base.html layout, and defines the
+ # main site layout: the header, footer, and main content area.
+ #
+ # It’s never accessed directly. Instead it is extended by all of our main site
+ # templates.
+ #
+ # This template defines one block region, `main`, which should be extended by
+ # child templates to define the main contents for the page.
+-#}
+
+{% extends "_layouts/site" %}
+
+
+{% block content %}
+    <main id="content" role="main">
+        <div class="container-fluid p-0 p-sm-1 {% if entry.section.handle == 'studio' %}px-0{% else %}central {% endif %} ">
+            
+            <div class="row no-gutters pt-2 mx-0">
+            {% for block in entry.gallery %}
+
+                {% if block.type == "image" %}  
+                    {% for image in block.image %}
+                        <div class="post col-sm-4 p-0 pb-1 p-sm-1 align-self-center text-center">                   
+                            {% if image.typeVideo | length  %}
+                                    {% set poster = image.homeVideoImage.first() %}
+                                    {% set mp4 = image.homeVideoMp4.first() %}
+                                    {% set webm = image.homeVideoWebm.first() %}
+                                    <span class="{{ image.orientation }}">
+                                        <video class="video-project" playsinline muted autoplay loop poster="{% if poster %}{{ poster.url }}{% endif %}" >
+                                            <source src="{% if webm %}{{ webm.url }}{% endif %}" type="video/webm" />
+                                            <source src="{% if mp4 %}{{ mp4.url }}{% endif %}" type="video/mp4" />Your browser does not support the video tag. I suggest you upgrade your browser.      
+                                        </video>                                      
+                                    </span>
+                                {% else %}
+                                    <span class="{{ image.orientation }} image">
+                                        <img class="img-fluid" src="{{ image.getUrl() }}" alt="{{ image.title }}">
+                                    </span>
+                                {% endif %}
+                        </div>
+                    {% endfor %}
+
+                {% elseif block.type == "singleFullWidth" %}  
+                    {% for image in block.fullWidth %}
+                        <div class="post col-12 p-0 pb-1 p-sm-1 align-self-center text-center">                   
+                            {% if image.typeVideo | length  %}
+                                    {% set poster = image.homeVideoImage.first() %}
+                                    {% set mp4 = image.homeVideoMp4.first() %}
+                                    {% set webm = image.homeVideoWebm.first() %}
+                                    {% if mediaSize %}
+                                        <div class="{{ mediaSize }} p-0 pb-1 text-center pack-shot">
+                                    {% else %}
+                                        <div class="col-12 text-center p-0 pb-1">
+                                    {% endif %}
+                                        <video class="video-project" playsinline muted autoplay loop poster="{% if poster %}{{ poster.url }}{% endif %}" >
+                                            <source src="{% if webm %}{{ webm.url }}{% endif %}" type="video/webm" />Your browser does not support the video tag. I suggest you upgrade your browser.
+                                            <source src="{% if mp4 %}{{ mp4.url }}{% endif %}" type="video/mp4" />Your browser does not support the video tag. I suggest you upgrade your browser.            
+                                        </video>
+                                    </div>
+                                {% else %}
+                                    {% set mediaSize = asset.mediaSize.value %}  
+                                    {% if mediaSize %}
+                                        <div class="{{ mediaSize }} p-0 pb-1 text-center pack-shot">
+                                    {% else %}
+                                        <div class="col-12 text-center p-0 pb-1">
+                                    {% endif %}
+                                            <img class="img-full" src="{{ image.getUrl() }}" alt="{{ image.title }}">
+                                        </div>
+                                {% endif %}
+                        </div>
+                    {% endfor %}
+
+                {% elseif block.type == "groupTitle" %}
+                    <div class="post group-title col-sm-4 p-0 pb-1 p-sm-1 align-self-center text-center">
+                    {% set image = block.backgroundImage.first() %}    
+                    {% if image %}
+                        <img class="lazy img-fluid" data-original="{{ image.getUrl() }}" alt="{{ image.title }}" data-height="{{ image.getHeight }}" data-width="{{ image.getWidth }}">
+                    {% endif %}                
+                        <p class=" text-uppercase font-medium py-5">{{ block.groupTitle }}</p>
+                    </div>
+
+                {% endif %}
+
+            {% endfor %}
+            </div> 
+        </div>
+    </main>
+</div>
+<a name="info" id="info"></a>            
+
+
+
+    {% for block in entry.profile_content %}
+       
+        {% if block.type == "fullWidth" %} 
+            <div class="row no-gutters border-top mt-5 pt-2 mx-1 mx-md-2">
+                <div class="col-sm-6">
+                    <h2 class="text-uppercase font-medium pt-sm-1">{{ block.full_heading|markdown }}</h2>
+                </div>
+                <div class="col pl-sm-1 studio-text">
+                    {{ block.full_body }}
+                </div>     
+            </div> 
+
+        {% elseif block.type == "two_column" %} 
+            <div class="row no-gutters border-top mt-5 pt-2 mx-1 mx-md-2">
+                <div class="col-sm-6">
+                    <h2 class="text-uppercase font-medium pt-sm-1">{{ block.two_col_heading|markdown }}</h2>
+                </div>
+                <div class="col-sm-6 pl-sm-1">
+                    <div class="row no-gutters">
+                        <div class="col-md-6 client-list-first">        
+                            {{ block.two_col_left }}
+                        </div>  
+                        <div class="col-md-6 client-list-second">        
+                            {{ block.two_col_right }}
+                        </div>
+                    </div>
+                </div>     
+            </div> 
+        {% endif %}
+    {% endfor %}    
+
+
+    
+
+{% endblock %}

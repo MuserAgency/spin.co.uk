@@ -1,0 +1,94 @@
+<footer class="footer text-left">
+    <div class="container-fluid central px-1 px-sm-2">
+        <div class="row mt-3 mb-4 pt-2 border-top no-gutters">
+            <div class="col-sm-6">
+                <h2 class="text-uppercase font-medium pb-1">Index</h2>
+            </div>
+            <div class="col-sm-6">
+                <div class="row no-gutters">
+                    <div class="col-md-6 pl-sm-1 mb-3">
+                        {% cache globally %}
+                        {% set navConfig2 = {
+                            'startwithActive' : true,
+                            'maxDepth' : 2,
+                            'activeClassOnAncestors' : true,
+                            'ancestorActiveClass' : 'activeAncestor'
+                        } %}
+                        {% set navigation = craft.navee.getNav('projectNav', navConfig2) %}
+                        <div class="project-index-images-wrapper">
+                            <div class="project-index-images-inner">
+                                {% nav node in navigation %}
+                                            {% set image = node.featuredImage.first() %}
+
+                                <div class="project-index-images-item project-index-{{ node.slug }}" data-slug="{{ node.slug }}"><img class='img-fluid' src='{{ image.getUrl() }}' alt='{{ image.title }}' /></div>
+                                {% endnav %}  
+                            </div>
+                        </div> 
+                        {%endcache%}
+                        
+                       {% cache globally %}
+                        {% set navigation = craft.navee.getNav('projectNav', navConfig2) %}
+
+                        <ul class="nav flex-column" style="position: relative;z-index: 9">
+                            {% nav node in navigation %}
+                            {% set image = node.featuredImage.first() %}
+                                <li class="nav-item {% if node.class %}{{ node.class }}{% endif %}">
+                                    <a class="nav-link projects-index-item" href="{{ node.link }}" data-slug="{{ node.slug }}">
+                                        {{ node.title }}
+                                    </a>
+                                </li>
+                            {% endnav %}                    
+                        </ul> 
+                        {%endcache%}
+
+                    </div>
+                    <div class="col-md-6 pl-sm-1">  
+                        {% cache globally %}
+                        {% set navigation = craft.navee.getNav('mainNav', navConfig) %}
+                        <ul class="nav flex-column font-medium">
+                            {% nav node in navigation %}
+                                <li class="nav-item {% if node.class %}{{ node.class }}{% endif %}">
+                                    <a class="nav-link text-uppercase" href="{{ node.link }}">{{ node.title }}</a>
+                                </li>
+                            {% endnav %}
+                        </ul>     
+                        {%endcache%}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mb-4 pt-2 border-top no-gutters">
+            <div class="col-sm-6">
+                <h2 class="text-uppercase font-medium">Spin</h2>
+            </div>
+            <div class="col-sm-6">
+                <div class="row no-gutters">
+                    <div class="col-md-6 pl-sm-1">
+                        <h2 class="text-uppercase font-medium">
+                            Studio<br /> 
+                            36 Elsynge road<br />
+                            london <br />
+                            sw18 2hn
+                        </h2>
+                        <h2 class="text-uppercase font-medium">
+                            <a href="mailto:studio@spin.co.uk">studio@spin.co.uk</a><br />
+                            +44 (0)20 7793 9555
+                        </h2>
+                    </div>
+                    <div class="col-md-6 pl-sm-1">
+                        <ul class="nav flex-column font-medium">
+                            <li class="nav-item">
+                                <a class="nav-link text-uppercase" href="https://www.instagram.com/spin_studio/" target="_blank">Instagram</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-uppercase" href="https://twitter.com/spin_studio" target="_blank">Twitter</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
